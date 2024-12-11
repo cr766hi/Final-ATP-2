@@ -6,25 +6,25 @@ using namespace std;
 int main() {
     Playlist* playlists = nullptr;
     int choice;
-    string playlistName, title, singer, filename; // Deklarasi di awal
+    string playlistName, title, singer, filename; // Deklarasi variabel
 
     while (true) {
-        // Menampilkan menu
         cout << "\n=== Playlist Manager ===\n";
         cout << "1. Buat Playlist\n";
         cout << "2. Tambahkan lagu dalam playlist\n";
         cout << "3. Tampilkan Playlist\n";
         cout << "4. Hapus lagu\n";
-        cout << "5. Muat Playlist dari file\n";
-        cout << "6. Cari lagu (judul)\n";
-        cout << "7. Menyimpan Playlist ke file\n";
-        cout << "8. Exit\n";
+        cout << "5. Cari lagu (judul)\n";
+        cout << "6. Menyimpan Playlist ke file\n";
+        cout << "7. Exit\n";
+        cout << "8. Mawu masukin file?\n";
         cout << "Masukkan pilihan: ";
         cin >> choice;
 
         // Memproses pilihan pengguna
-        if (choice == 8) {
+        if (choice == 7) {
             cout << "Keluar dari program..." << endl;
+            deletePlaylist(playlists);
             break;
         }
 
@@ -84,8 +84,7 @@ int main() {
                 }
                 break;
             }
-            
-            case 6: {
+            case 5: {
                 cout << "Masukkan nama playlist: ";
                 cin >> playlistName;
                 Playlist* current = playlists;
@@ -113,23 +112,25 @@ int main() {
                 }
                 break;
             }
-            case 7: {
-                cout << "Masukkan nama playlist: ";
-                cin >> playlistName;
-                Playlist* current = playlists;
-                while (current != nullptr && current->name != playlistName) {
-                    current = current->next;
-                }
-                if (current == nullptr) {
-                    cout << "Playlist tidak ditemukan!\n";
-                } else {
-                    cout << "Masukkan nama file untuk menyimpan: ";
-                    cin >> filename;
-                    savePlaylistToFile(current, filename);
-                }
-                break;
-            }
-            default:
+            case 6: {
+    if (playlists == nullptr) {
+        cout << "Tidak ada playlist untuk disimpan!\n";
+    } else {
+        cout << "Masukkan nama file untuk menyimpan semua playlist: ";
+        cin >> filename;
+        saveAllPlaylistsToFile(playlists, filename);
+    }
+    break;
+}
+
+case 8: {
+    cout << "Masukkan nama file untuk dimuat: ";
+    cin >> filename;
+    loadFileTxt(playlists, filename);
+    break;
+}
+
+              default:
                 cout << "Pilihan tidak valid. Silakan coba lagi.\n";
                 break;
         }
