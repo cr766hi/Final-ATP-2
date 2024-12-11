@@ -15,14 +15,15 @@ int main() {
         cout << "2. Tambahkan lagu dalam playlist\n";
         cout << "3. Tampilkan Playlist\n";
         cout << "4. Hapus lagu\n";
-        cout << "5. Cari lagu (judul)\n";
-        cout << "6. Menyimpan Playlist ke file\n";
-        cout << "7. Exit\n";
+        cout << "5. Muat Playlist dari file\n";
+        cout << "6. Cari lagu (judul)\n";
+        cout << "7. Menyimpan Playlist ke file\n";
+        cout << "8. Exit\n";
         cout << "Masukkan pilihan: ";
         cin >> choice;
 
         // Memproses pilihan pengguna
-        if (choice == 7) {
+        if (choice == 8) {
             cout << "Keluar dari program..." << endl;
             break;
         }
@@ -83,8 +84,8 @@ int main() {
                 }
                 break;
             }
-
-            case 5: {
+            
+            case 6: {
                 cout << "Masukkan nama playlist: ";
                 cin >> playlistName;
                 Playlist* current = playlists;
@@ -112,7 +113,7 @@ int main() {
                 }
                 break;
             }
-            case 6: {
+            case 7: {
                 cout << "Masukkan nama playlist: ";
                 cin >> playlistName;
                 Playlist* current = playlists;
