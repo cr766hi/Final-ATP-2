@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-// Struktur data
+
 struct Song {
     string title;
     string singer;
