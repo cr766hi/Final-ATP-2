@@ -90,16 +90,16 @@ void loadFileTxt(Playlist*& playlists, const string& filename) {
     Playlist* currentPlaylist = nullptr;
 
     while (getline(file, line)) {
-        // Jika baris kosong, lewati
+        // kalau baris kosong, lewati
         if (line.empty()) {
             continue;
         }
 
-        // Jika baris dimulai dengan "Playlist:", itu adalah nama playlist
+        // kalau baris dimulai dengan "Playlist:", itu artinya nama playlist
         if (line.substr(0, 9) == "Playlist:") {
-            playlistName = line.substr(10); // Mengambil nama playlist setelah "Playlist: "
-            createPlaylist(playlists, playlistName); // Membuat playlist baru
-            currentPlaylist = playlists; // Playlist terakhir yang dibuat menjadi aktif
+            playlistName = line.substr(10); // mengambil nama playlist setelah "Playlist: "
+            createPlaylist(playlists, playlistName); 
+            currentPlaylist = playlists; 
         } else {
             // Membaca judul dan penyanyi dari satu baris (pemisah '|')
             size_t separator = line.find('|');
@@ -117,10 +117,20 @@ void loadFileTxt(Playlist*& playlists, const string& filename) {
     cout << "Data dari file '" << filename << "' telah dimuat ke program." << endl;
 }
 
+void sortSongs(Playlist* playlist) {
+    if (!playlist->head || !playlist->head->next) return; 
 
-
-
-
+    for (Song* i = playlist->head; i->next != nullptr; i = i->next) {
+        for (Song* j = i->next; j != nullptr; j = j->next) {
+           
+            if (i->title > j->title) {
+               
+                swap(i->title, j->title);
+                swap(i->singer, j->singer);
+            }
+        }
+    }
+}
 
 
 void deletePlaylist(Playlist*& playlists) {
