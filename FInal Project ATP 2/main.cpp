@@ -1,3 +1,8 @@
+//KELOMPOK 11 DENGAN ANGGOTA :
+//1. S. Farhan Baig              5027241097
+//2. Raihan Fahri Ghazali        5027241061
+//3. Christiano Ronaldo Silalahi 5027241025
+
 #include <iostream>
 #include "playlist.cpp"
 
@@ -9,20 +14,21 @@ int main() {
     string playlistName, title, singer, filename; // Deklarasi variabel
 
     while (true) {
+        // Menampilkan menu
         cout << "\n=== Playlist Manager ===\n";
         cout << "1. Buat Playlist\n";
         cout << "2. Tambahkan lagu dalam playlist\n";
         cout << "3. Tampilkan Playlist\n";
         cout << "4. Hapus lagu\n";
-        cout << "5. Cari lagu (judul)\n";
-        cout << "6. Menyimpan Playlist ke file\n";
-        cout << "7. Exit\n";
-        cout << "8. Mawu masukin file?\n";
+        cout << "5. Urutin lagu berdasarkan judul \n";
+        cout << "6. Menyimpan Playlist ke file\n";  
+        cout << "7. masuk-an file kedalam program\n";
+        cout << "8. Exit\n";
         cout << "Masukkan pilihan: ";
         cin >> choice;
 
         // Memproses pilihan pengguna
-        if (choice == 7) {
+        if (choice == 8) {
             cout << "Keluar dari program..." << endl;
             deletePlaylist(playlists);
             break;
@@ -84,7 +90,7 @@ int main() {
                 }
                 break;
             }
-            case 5: {
+           case 5: { 
                 cout << "Masukkan nama playlist: ";
                 cin >> playlistName;
                 Playlist* current = playlists;
@@ -94,24 +100,12 @@ int main() {
                 if (current == nullptr) {
                     cout << "Playlist tidak ditemukan!\n";
                 } else {
-                    cout << "Masukkan judul lagu yang ingin dicari: ";
-                    cin >> title;
-                    Song* song = current->head;
-                    bool found = false;
-                    while (song != nullptr) {
-                        if (song->title == title) {
-                            cout << "Lagu ditemukan: " << song->title << " oleh " << song->singer << endl;
-                            found = true;
-                            break;
-                        }
-                        song = song->next;
-                    }
-                    if (!found) {
-                        cout << "Lagu tidak ditemukan di playlist ini.\n";
-                    }
+                    sortSongs(current);
+                    cout << "Lagu dalam playlist '" << playlistName << "' udah diurutkan berdasarkan alfabet judul.\n";
                 }
                 break;
             }
+
             case 6: {
     if (playlists == nullptr) {
         cout << "Tidak ada playlist untuk disimpan!\n";
@@ -123,7 +117,7 @@ int main() {
     break;
 }
 
-case 8: {
+case 7: {
     cout << "Masukkan nama file untuk dimuat: ";
     cin >> filename;
     loadFileTxt(playlists, filename);
