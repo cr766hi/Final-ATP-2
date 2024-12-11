@@ -4,7 +4,6 @@
 #include "playlist.h"
 using namespace std;
 
-// Implementasi fungsi
 void createPlaylist(Playlist*& playlists, const string& name) {
     Playlist* newPlaylist = new Playlist;
     newPlaylist->name = name;
@@ -52,35 +51,75 @@ void removeSong(Playlist* playlist, const string& title) {
     cout << "Lagu '" << title << "' telah dihapus." << endl;
 }
 
-void sortSongs(Playlist* playlist, bool bySinger) {
-    if (!playlist->head || !playlist->head->next) return;
-
-    for (Song* i = playlist->head; i->next != nullptr; i = i->next) {
-        for (Song* j = i->next; j != nullptr; j = j->next) {
-            if ((bySinger && i->singer > j->singer) || (!bySinger && i->title > j->title)) {
-                swap(i->title, j->title);
-                swap(i->singer, j->singer);
-            }
-        }
+void saveAllPlaylistsToFile(const Playlist* playlists, const string& filename) {
+    string filenameWithExt = filename;
+    if (filenameWithExt.size() < 4 || filenameWithExt.substr(filenameWithExt.size() - 4) != ".txt") {
+        filenameWithExt += ".txt";
     }
-}
 
-void savePlaylistToFile(const Playlist* playlist, const string& filename) {
-    ofstream file(filename);
+    ofstream file(filenameWithExt);
     if (!file) {
         cout << "Gagal membuka file untuk menulis!" << endl;
         return;
     }
 
-    const Song* current = playlist->head;
-    while (current != nullptr) {
-        file << current->title << "|" << current->singer << endl;
-        current = current->next;
+    const Playlist* currentPlaylist = playlists;
+    while (currentPlaylist != nullptr) {
+        file << "Playlist: " << currentPlaylist->name << endl;
+        const Song* currentSong = currentPlaylist->head;
+        while (currentSong != nullptr) {
+            file << currentSong->title << "|" << currentSong->singer << endl;
+            currentSong = currentSong->next;
+        }
+        file << endl; // Pisahkan playlist dengan baris kosong
+        currentPlaylist = currentPlaylist->next;
     }
 
     file.close();
-    cout << "Playlist telah disimpan ke file '" << filename << "'." << endl;
+    cout << "Semua playlist telah disimpan ke file '" << filenameWithExt << "'." << endl;
 }
+
+void loadFileTxt(Playlist*& playlists, const string& filename) {
+    ifstream file(filename);
+    if (!file) {
+        cout << "Gagal membuka file untuk membaca!" << endl;
+        return;
+    }
+
+    string line, playlistName, title, singer;
+    Playlist* currentPlaylist = nullptr;
+
+    while (getline(file, line)) {
+        // Jika baris kosong, lewati
+        if (line.empty()) {
+            continue;
+        }
+
+        // Jika baris dimulai dengan "Playlist:", itu adalah nama playlist
+        if (line.substr(0, 9) == "Playlist:") {
+            playlistName = line.substr(10); // Mengambil nama playlist setelah "Playlist: "
+            createPlaylist(playlists, playlistName); // Membuat playlist baru
+            currentPlaylist = playlists; // Playlist terakhir yang dibuat menjadi aktif
+        } else {
+            // Membaca judul dan penyanyi dari satu baris (pemisah '|')
+            size_t separator = line.find('|');
+            if (separator != string::npos) {
+                title = line.substr(0, separator);
+                singer = line.substr(separator + 1);
+                if (currentPlaylist != nullptr) {
+                    addSong(currentPlaylist, title, singer); // Tambahkan lagu ke playlist
+                }
+            }
+        }
+    }
+
+    file.close();
+    cout << "Data dari file '" << filename << "' telah dimuat ke program." << endl;
+}
+
+
+
+
 
 
 
